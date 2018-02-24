@@ -3,9 +3,7 @@ package com.paulmdavies.yahtzeeScorer;
 import com.paulmdavies.yahtzeeScorer.exceptions.HandMustContainFiveDiceException;
 import com.paulmdavies.yahtzeeScorer.exceptions.HandMustNotContainsInvalidDieValuesException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -18,16 +16,28 @@ public class Hand {
         checkDieValues();
     }
 
-    public List<Integer> dieGroups() {
-        Map<Integer, Integer> dieCounts = dice
+    public List<Integer> nonZeroDieGroups() {
+        Map<Integer, Integer> counts = dice
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, die -> 1, Integer::sum)));
-        return dieCounts
-                .values()
+        return new ArrayList<>(counts.values())
                 .stream()
-                .filter(aLong -> aLong != 0)
+                .filter(integer -> integer != 0)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public List<Integer> diePresences() {
+        Map<Integer, Integer> dieCounts = dice
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, die -> 1, Integer::max)));
+        dieCounts.putIfAbsent(1, 0);
+        dieCounts.putIfAbsent(2, 0);
+        dieCounts.putIfAbsent(3, 0);
+        dieCounts.putIfAbsent(4, 0);
+        dieCounts.putIfAbsent(5, 0);
+        dieCounts.putIfAbsent(6, 0);
+        return new ArrayList<>(dieCounts.values());
     }
 
     private void checkDieValues() throws HandMustNotContainsInvalidDieValuesException {

@@ -28,11 +28,20 @@ public class HandTest {
     }
 
     @Test
-    public void shouldReturnGroupsInIncreasingOrder() throws HandMustContainFiveDiceException, HandMustNotContainsInvalidDieValuesException {
+    public void shouldReturnNonZeroDieGroupsInIncreasingOrder() throws HandMustContainFiveDiceException, HandMustNotContainsInvalidDieValuesException {
         Hand hand = new Hand(Arrays.asList(1, 1, 2, 2, 3));
 
-        List<Integer> groups = hand.dieGroups();
+        List<Integer> groups = hand.nonZeroDieGroups();
 
         assertThat(groups, is(equalTo(Arrays.asList(1, 2, 2))));
+    }
+
+    @Test
+    public void shouldReturnDiePresences() throws HandMustContainFiveDiceException, HandMustNotContainsInvalidDieValuesException {
+        Hand hand = new Hand(Arrays.asList(2, 2, 4, 4, 5));
+
+        List<Integer> groups = hand.diePresences();
+
+        assertThat(groups, is(equalTo(Arrays.asList(0, 1, 0, 1, 1, 0))));
     }
 }
