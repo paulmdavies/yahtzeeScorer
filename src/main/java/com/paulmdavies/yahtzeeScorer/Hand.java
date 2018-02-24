@@ -5,6 +5,7 @@ import com.paulmdavies.yahtzeeScorer.exceptions.HandMustNotContainsInvalidDieVal
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Hand {
@@ -14,6 +15,10 @@ public class Hand {
         this.dice = dice;
         checkDieCount();
         checkDieValues();
+    }
+
+    public Integer sumOfDice() {
+        return dice.stream().mapToInt(Integer::intValue).sum();
     }
 
     public List<Integer> nonZeroDieGroups() {
