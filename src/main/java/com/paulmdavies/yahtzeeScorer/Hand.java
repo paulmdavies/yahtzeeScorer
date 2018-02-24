@@ -5,6 +5,8 @@ import com.paulmdavies.yahtzeeScorer.exceptions.HandMustNotContainsInvalidDieVal
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Hand {
@@ -14,6 +16,18 @@ public class Hand {
         this.dice = dice;
         checkDieCount();
         checkDieValues();
+    }
+
+    public List<Integer> dieGroups() {
+        Map<Integer, Integer> dieCounts = dice
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, die -> 1, Integer::sum)));
+        return dieCounts
+                .values()
+                .stream()
+                .filter(aLong -> aLong != 0)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private void checkDieValues() throws HandMustNotContainsInvalidDieValuesException {
