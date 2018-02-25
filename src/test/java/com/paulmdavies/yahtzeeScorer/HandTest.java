@@ -1,11 +1,13 @@
 package com.paulmdavies.yahtzeeScorer;
 
+import com.google.common.collect.ImmutableMap;
 import com.paulmdavies.yahtzeeScorer.exceptions.HandMustContainFiveDiceException;
 import com.paulmdavies.yahtzeeScorer.exceptions.HandMustNotContainsInvalidDieValuesException;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -52,5 +54,16 @@ public class HandTest {
         Integer sum = hand.sumOfDice();
 
         assertThat(sum, is(equalTo(18)));
+    }
+
+    @Test
+    public void shouldReturnDieGroups() throws HandMustContainFiveDiceException, HandMustNotContainsInvalidDieValuesException {
+        Hand hand = new Hand(Arrays.asList(1, 3, 4, 4, 6));
+
+        Map<Integer, Integer> groups = hand.dieGroups();
+
+        assertThat(groups, is(equalTo(
+                ImmutableMap.builder().put(1, 1).put(2, 0).put(3, 1).put(4, 2).put(5, 0).put(6, 1).build()))
+        );
     }
 }

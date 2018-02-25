@@ -22,14 +22,24 @@ public class Hand {
     }
 
     public List<Integer> nonZeroDieGroups() {
-        Map<Integer, Integer> counts = dice
-                .stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, die -> 1, Integer::sum)));
-        return new ArrayList<>(counts.values())
+        return new ArrayList<>(dieGroups().values())
                 .stream()
                 .filter(integer -> integer != 0)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public Map<Integer, Integer> dieGroups() {
+        Map<Integer, Integer> dieCounts = dice
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, die -> 1, Integer::sum)));
+        dieCounts.putIfAbsent(1, 0);
+        dieCounts.putIfAbsent(2, 0);
+        dieCounts.putIfAbsent(3, 0);
+        dieCounts.putIfAbsent(4, 0);
+        dieCounts.putIfAbsent(5, 0);
+        dieCounts.putIfAbsent(6, 0);
+        return dieCounts;
     }
 
     public List<Integer> diePresences() {
