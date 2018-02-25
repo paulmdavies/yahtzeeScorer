@@ -44,4 +44,13 @@ public class HandTest {
 
         assertThat(groups, is(equalTo(Arrays.asList(0, 1, 0, 1, 1, 0))));
     }
+
+    @Test
+    public void shouldReturnSumOfDice() throws HandMustContainFiveDiceException, HandMustNotContainsInvalidDieValuesException {
+        Hand hand = new Hand(Arrays.asList(1, 3, 4, 4, 6));
+
+        Integer sum = hand.sumOfDice();
+
+        assertThat(sum, is(equalTo(18)));
+    }
 }
